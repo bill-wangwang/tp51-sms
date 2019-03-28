@@ -1,0 +1,20 @@
+{
+    "name": "phpcode/tp51-sms",
+    "description": "no Description  is good Description!",
+    "type": "library",
+    "require": {
+        "qcloudsms/qcloudsms_php": "0.1.*"
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "tp51\\sms\\": "src/tp51/sms"
+        }
+    },
+    "authors": [
+        {
+            "name": "bill",
+            "email": "285303886@qq.com"
+        }
+    ]
+}
