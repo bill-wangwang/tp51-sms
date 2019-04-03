@@ -145,7 +145,7 @@ class Sms {
                 throw new \Exception("暂未支持的短信类型-{$this->_config['sms_type']}", $this->_config['exception_code']);
                 break;
         }
-        $out_id = $object->sendSms(array_merge($this->_config, config('sms.' . $this->_config['sms_type'])), $type, $mobile, $params);
+        $out_id = $object->sendSms(array_merge(config('sms.' . $this->_config['sms_type']), $this->_config ), $type, $mobile, $params);
         //回调函数的参数
         $callBackParams = [
             'sms_type' => $this->_config['sms_type'],
