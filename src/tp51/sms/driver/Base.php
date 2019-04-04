@@ -9,19 +9,23 @@ class Base {
         if(isset($config['sms_template_list']) && is_array($config['sms_template_list']) && sizeof($config['sms_template_list'])>0 ){
             return $config['sms_template_list'];
         }
-        $cache_key = $config['cache_key_prefix_sms_template'] . $sms_type;
-        if (!($templates = cache($cache_key))) {
+        if(isset($config['table_sms_template']) && $config['table_sms_template']){
+            $cache_key = $config['cache_key_prefix_sms_template'] . $sms_type;
+            if (!($templates = cache($cache_key))) {
+                $templates = [];
+                $data = Db::table(config('database.prefix') . $config['table_sms_template'])->where('sms_type', '=', $sms_type)->column('title,template_id,params,template', 'type');
+                foreach ($data as $key => $value) {
+                    $params = $value['params'] ? array_map('trim', explode(',', $value['params'])) : [];
+                    $value['params'] = $params;
+                    $templates[$key] = $value;
+                }
+                //为了效率，缓存起来
+                if ($config['use_cache']) {
+                    cache($cache_key, $templates);
+                }
+            }
+        } else {
             $templates = [];
-            $data = Db::table(config('database.prefix') . $config['table_sms_template'])->where('sms_type', '=', $sms_type)->column('title,template_id,params,template', 'type');
-            foreach ($data as $key => $value) {
-                $params = $value['params'] ? array_map('trim', explode(',', $value['params'])) : [];
-                $value['params'] = $params;
-                $templates[$key] = $value;
-            }
-            //为了效率，缓存起来
-            if ($config['use_cache']) {
-                cache($cache_key, $templates);
-            }
         }
         return $templates;
     }

@@ -10,7 +10,7 @@ use tp51\sms\driver\QcloudSms;
 class Sms {
 
     //版本号
-    private $version = '1.0.0';
+    private $version = '1.0.2';
     //发送成功后回调
     private $sendCallBack = null;
     //默认config配置
