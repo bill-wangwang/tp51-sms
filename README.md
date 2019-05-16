@@ -37,14 +37,14 @@ if($res){
 ```
 
 ## 支持
-- 阿里云的阿里大鱼
-- 腾讯云的qcloudsms
-- 本地发送（不真实发送短信，配合万能验证码在开发环境调试）
-
+- 阿里云的阿里大鱼`dysms`
+- 腾讯云的`qcloudsms`
+- 本地发送`local`（不真实发送短信，配合万能验证码在开发环境调试）
+- 创蓝短信`clsms`
 ## 重要选项
-- `sms_type` 支持[ `dysms` 、 `qcloudsms` 、 `local` ]
+- `sms_type` 支持[ `dysms` 、 `qcloudsms` 、 `local`、`clsms` ]
 - `sms_type`设置为`local`时，配合`public_verify_code`可以配置万能验证码以节约短信费用
-- 短信模板除了腾讯云的需要`{1}`, `{2}`这种格式外，其它的都是 `${code}`， `${name}`的形式，因此为了更好的兼容各种短信，建议程序使用可以key的参数 `['code'=>$code, 'name'=>$name]` 而不是`[$code, $name]`
+- 短信模板除了`腾讯云(qcloudsms)`和`创蓝(clsms)`的需要`{1}`, `{2}`这种格式外，其它的都是 `${code}`， `${name}`的形式，因此为了更好的兼容各种短信，建议程序使用可以key的参数 `['code'=>$code, 'name'=>$name]` 而不是`[$code, $name]`
 
 ## 功能
 - 灵活的配置（可以参考`Sms.php`的配置项`$_config`）
@@ -58,3 +58,7 @@ if($res){
 ## 注意事项
 - 生产环境建议把 `use_cache`设置为`true`以提高性能
 - 如果更改了短信模板的并且使用缓存`use_cache`为`true`时，需要手动调用`clearTemplatesCache()`方法清除短信模板，否则不生效
+
+## V1.0.3 更新日志
+- 新增创蓝短信支持
+- 修复`sms_template_list`配置被覆盖的bug

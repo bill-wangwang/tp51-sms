@@ -27,7 +27,14 @@ return [
         'action'            => env('sms:dysms.action', 'SendSms'),
         'version'           => env('sms:dysms.version', '2017-05-25'),
         'sms_template_list' => [], //短信模板
-    ]
+    ],
+    //创蓝短信
+    'clsms'     => [
+    'access_key_id'     => env('sms:clsms.access_key_id'),
+    'access_key_secret' => env('sms:clsms.access_key_secret'),
+    //短信签名，创蓝本身不需要
+    'sign_name'         => env('sms:clsms.sign_name'),
+    'sms_template_list' => [], //短信模板
     /*
      * 注意事项：
      * sms_template_list 不为空时，use_cache，cache_key_prefix_sms_template和table_sms_template 3项配置均无效，
@@ -36,7 +43,7 @@ return [
      *  'register'=>[
      *      'title'=>'用户注册',
      *      'template_id'=>'local_register',
-     *      'params'=>['code'], //如果是腾讯云记得为 ['{1}'] 这种
+     *      'params'=>['code'], //如果是腾讯云或者创蓝记得为 ['{1}'] 这种
      *      'template'=>'您好，欢迎注册超级商城，您的手机验证码是：${code}，若非本人操作，请忽略！'
      *   ]
      * ]
