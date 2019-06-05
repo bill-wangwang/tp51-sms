@@ -42,9 +42,9 @@ if($res){
 - 本地发送`local`（不真实发送短信，配合万能验证码在开发环境调试）
 - 创蓝短信`clsms`
 ## 重要选项
-- `sms_type` 支持[ `dysms` 、 `qcloudsms` 、 `local`、`clsms` ]
+- `sms_type` 支持[ `dysms` 、 `qcloudsms` 、 `local`、`clsms`、`htsms` ]
 - `sms_type`设置为`local`时，配合`public_verify_code`可以配置万能验证码以节约短信费用
-- 短信模板除了`腾讯云(qcloudsms)`和`创蓝(clsms)`的需要`{1}`, `{2}`这种格式外，其它的都是 `${code}`， `${name}`的形式，因此为了更好的兼容各种短信，建议程序使用可以key的参数 `['code'=>$code, 'name'=>$name]` 而不是`[$code, $name]`
+- 短信模板除了`腾讯云(qcloudsms)`的需要`{1}`, `{2}`这种格式外，其它的都是 `${code}`， `${name}`的形式，因此为了更好的兼容各种短信，建议程序使用可以key的参数 `['code'=>$code, 'name'=>$name]` 而不是`[$code, $name]`
 
 ## 功能
 - 灵活的配置（可以参考`Sms.php`的配置项`$_config`）
@@ -56,9 +56,10 @@ if($res){
 - 支持非数据库设置短信模板（优先级高于数据库配置短信模板）`->setSmsTemplateList()`
 
 ## 注意事项
-- 生产环境建议把 `use_cache`设置为`true`以提高性能
+- 生产环境如果把`短信模板`配置到`数据库`建议把 `use_cache`设置为`true`以提高性能
 - 如果更改了短信模板的并且使用缓存`use_cache`为`true`时，需要手动调用`clearTemplatesCache()`方法清除短信模板，否则不生效
 
-## V1.0.3 更新日志
-- 新增创蓝短信支持
-- 修复`sms_template_list`配置被覆盖的bug
+## V1.0.4 更新日志
+- 新增短信类型`虹腾`(`htsms`)
+- 修改`创蓝`短信为`变量`模板而非数字作为key的用法
+- 修复`examples/config/sms.php`内容

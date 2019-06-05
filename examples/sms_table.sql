@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS `{$prefix}sms_template` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `sms_type` varchar(20) NOT NULL DEFAULT 'local' COMMENT '短信类型 local | qcloudsms | dysms',
+  `sms_type` varchar(20) NOT NULL DEFAULT 'local' COMMENT '短信类型 local | qcloudsms | dysms | clsms | htsms',
   `type` varchar(50) NOT NULL DEFAULT '' COMMENT '业务类型(如register | find_password)',
   `title` varchar(50) NOT NULL DEFAULT '' COMMENT '短信标题',
   `template_id` varchar(50) NOT NULL DEFAULT '' COMMENT '短信模板ID',

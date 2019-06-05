@@ -9,9 +9,8 @@ class ClSms extends Base {
         $access_key_secret = $config['access_key_secret'] ?: '';
         $sign_name = $config['sign_name'] ?: '';
         $template_message = $template['template'];
-        $params_values = array_values($params);
-        foreach($params_values as $key=>$value){
-            $template_message = str_replace('{' . $key . '}', $params_values[$key], $template_message);
+        foreach($params as $key=>$value){
+            $template_message = str_replace('${' . $key . '}', $params[$key], $template_message);
         }
         if (empty($access_key_id) || empty($access_key_secret)) {
             throw new \Exception("暂未配置({$config['sms_type']})短信的授权、短信签名等参数", $config['exception_code']);

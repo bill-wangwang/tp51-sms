@@ -40,16 +40,15 @@ class Base {
             if (sizeof($template['params']) != sizeof($params)) {
                 throw new \Exception("短信参数个数不正确", $config['exception_code']);
             }
-            //如果不是腾讯云或者创蓝短信还需判断对应的key是否存在并且不能为空
+            //如果不是腾讯云还需判断对应的key是否存在并且不能为空
             //实际上创蓝短信无需模板，这里为了统一必须先建立模板
-            if ( !in_array($sms_type, ['qcloudsms', 'clsms'])   ) {
+            if ( !in_array($sms_type, ['qcloudsms'])   ) {
                 foreach ($template['params'] as $key => $value) {
                     if (!isset($params[$value]) || $params[$value] === '') {
                         throw new \Exception("短信类型{$sms_type}-{$type}缺少必填参数{$value}或参数{$value}为空", $config['exception_code']);
                     }
                 }
             }
-
         }
         return $template;
     }

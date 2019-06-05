@@ -6,18 +6,19 @@ use think\Db;
 use tp51\sms\driver\LocalSms;
 use tp51\sms\driver\DySms;
 use tp51\sms\driver\ClSms;
+use tp51\sms\driver\HtSms;
 use tp51\sms\driver\QcloudSms;
 
 class Sms {
 
     //版本号
-    private $version = '1.0.3';
+    private $version = '1.0.4';
     //发送成功后回调
     private $sendCallBack = null;
     //默认config配置
     protected $_config = [
         'exception_code'                => 8101, //异常错误代码
-        'sms_type'                      => 'local', //短信类型 ['qcloudsms', 'dysms', 'local', 'clsms']
+        'sms_type'                      => 'local', //短信类型 ['qcloudsms', 'dysms', 'local', 'clsms', 'htsms']
         'sms_template_list'             => [], //短信模板，该项不为空时以此为准，为空时用数据库中的模板
         'same_as_last_time'             => true, //验证码有效期时间内重新获取是否和上次一样 true | false
         'verify_code_length'            => 4, //验证码长度（分钟）
@@ -87,11 +88,19 @@ class Sms {
     }
 
     /**
+     * 设置短信签名
+     * @param $value string 短信签名
+     */
+    public function setSignName($value) {
+        $this->_config['sign_name'] = $value;
+    }
+
+    /**
      * 清除短信模板缓存
      * @return bool
      */
     public function clearTemplatesCache() {
-        $allow_sms_type = ['qcloudsms', 'dysms', 'local', 'clsms'];
+        $allow_sms_type = ['qcloudsms', 'dysms', 'local', 'clsms', 'htsms'];
         foreach ($allow_sms_type as $sms_type) {
             $cache_key = $this->_config['cache_key_prefix_sms_template'] . $sms_type;
             cache($cache_key, null);
@@ -100,7 +109,7 @@ class Sms {
     }
 
     private function _getSmsType() {
-        $allow_sms_type = ['qcloudsms', 'dysms', 'local', 'clsms'];
+        $allow_sms_type = ['qcloudsms', 'dysms', 'local', 'clsms', 'htsms'];
         $sms_type = strtolower($this->_config['sms_type']);
         if (in_array($sms_type, $allow_sms_type)) {
             return $sms_type;
@@ -143,6 +152,9 @@ class Sms {
             case 'clsms':
                 $object = new ClSms();
                 break;
+            case 'htsms':
+                $object = new HtSms();
+                break;
             case 'local':
                 $object = new LocalSms();
                 break;
@@ -152,9 +164,7 @@ class Sms {
         }
         //如果config/sms.php中的 [sms_type]['sms_template_list'] 不为空
         $merge_config = array_merge(config('sms.' . $this->_config['sms_type']), $this->_config);
-        if (!$merge_config['sms_template_list'] && isset($merge_config[$this->_config['sms_type']])
-            && isset($merge_config[$this->_config['sms_type']]['sms_template_list'])
-            && !empty($merge_config[$this->_config['sms_type']]['sms_template_list'])) {
+        if (!$merge_config['sms_template_list'] && isset($merge_config[$this->_config['sms_type']]) && isset($merge_config[$this->_config['sms_type']]['sms_template_list']) && !empty($merge_config[$this->_config['sms_type']]['sms_template_list'])) {
             $merge_config['sms_template_list'] = $merge_config[$this->_config['sms_type']]['sms_template_list'];
         }
         $out_id = $object->sendSms($merge_config, $type, $mobile, $params);
@@ -176,7 +186,7 @@ class Sms {
             if (is_callable($sendCallBack)) {
                 call_user_func($sendCallBack, $callBackParams);
             } else {
-                throw new \Exception(json_encode($sendCallBack) . "不是有效的回调函数",$this->_config['exception_code']);
+                throw new \Exception(json_encode($sendCallBack) . "不是有效的回调函数", $this->_config['exception_code']);
             }
         }
         return $out_id;
