@@ -67,7 +67,7 @@ class HtSms extends Base {
             $json = json_decode($res, 1);
             if($json && is_array($json)){
                 if(isset($json['code']) && $json['code']===200){
-                    return $json;
+                    return $json['order_id'];
                 } else {
                     throw new \Exception("发送短信失败,网络错误(003){$res}", $config['exception_code']);
                 }

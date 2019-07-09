@@ -41,6 +41,7 @@ if($res){
 - 腾讯云的`qcloudsms`
 - 本地发送`local`（不真实发送短信，配合万能验证码在开发环境调试）
 - 创蓝短信`clsms`
+- 虹腾短信`htsms`
 ## 重要选项
 - `sms_type` 支持[ `dysms` 、 `qcloudsms` 、 `local`、`clsms`、`htsms` ]
 - `sms_type`设置为`local`时，配合`public_verify_code`可以配置万能验证码以节约短信费用
@@ -63,3 +64,6 @@ if($res){
 - 新增短信类型`虹腾`(`htsms`)
 - 修改`创蓝`短信为`变量`模板而非数字作为key的用法
 - 修复`examples/config/sms.php`内容
+
+## V1.0.5 更新日志
+- 修复虹腾短信 返回参数
