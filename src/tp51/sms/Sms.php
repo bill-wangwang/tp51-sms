@@ -50,7 +50,15 @@ class Sms {
      */
 
     public function __construct($config = []) {
-        $this->_config = array_merge($this->_config, config('sms.'), $config);
+        $tp_version = \think\App::VERSION;
+        if(!$tp_version){
+            $tp_version = '5.1.36';
+        }
+        if( version_compare($tp_version, '6.0.0')>=0 ){
+            $this->_config = array_merge($this->_config, config('sms'), $config);
+        } else {
+            $this->_config = array_merge($this->_config, config('sms.'), $config);
+        }
     }
 
     public function setSendCallBack($call_back) {
