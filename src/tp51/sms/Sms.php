@@ -210,7 +210,15 @@ class Sms {
         if (!isset($data['create_time'])) {
             $data['create_time'] = time();
         }
-        return Db::table(config('database.prefix') . $this->_config['table_sms_log'])->insert($data);
+        $tp_version = \think\App::VERSION;
+        if(!$tp_version){
+            $tp_version = '5.1.36';
+        }
+        if( version_compare($tp_version, '6.0.0')>=0 ){
+            return \think\facade\Db::table(config('database.connections.mysql.prefix') . $this->_config['table_sms_log'])->insert($data);
+        } else {
+            return Db::table(config('database.prefix') . $this->_config['table_sms_log'])->insert($data);
+        }
     }
 
     /**
