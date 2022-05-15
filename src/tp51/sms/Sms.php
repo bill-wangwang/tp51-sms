@@ -185,7 +185,7 @@ class Sms {
             'out_id'   => $out_id
         ];
         //如果有配置短信日志表则写日志
-        if ($this->_config['table_sms_log']) {
+        if ($merge_config['table_sms_log']) {
             $this->_writeSmsLog($callBackParams);
         }
         //如果有设置回调方法并且是一个可以回调的方法
